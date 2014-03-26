@@ -15,7 +15,7 @@ module.exports = function(config) {
     },
     coverageReporter: {
       type: 'lcov',
-      dir: 'coverage'
+      dir: 'reports/coverage'
     },
     plugins: [
       'karma-coverage',

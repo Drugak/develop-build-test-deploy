@@ -435,6 +435,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // CasperJS test settings
     casperjs: {
       options: {
         async: {
@@ -444,10 +445,27 @@ module.exports = function (grunt) {
       files: ['test/casperjs/**/*.js']
     },
 
+    // Accessibility test settings
+    accessibility: {
+      options : {
+        accessibilityLevel: 'WCAG2AAA'
+      },
+      test : {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/views/',
+          src: ['**/*.html'],
+          dest: 'reports/accessibility/',
+          ext: '-report'
+        }]
+      }
+    },
+
+    // Code coverage report submit to Coveralls.io
     coveralls: {
       options: {
         force: true,
-        coverage_dir: 'coverage'
+        coverage_dir: 'reports/coverage'
       }
     },
 
@@ -527,7 +545,8 @@ module.exports = function (grunt) {
         'autoprefixer',
         'karma',
         'express:dev',
-        'casperjs'
+        'casperjs',
+        'accessibility'
       ]);
     }
 
@@ -540,6 +559,7 @@ module.exports = function (grunt) {
       'karma',
       'express:test',
       'casperjs',
+      'accessibility',
       'coveralls'
     ]);
   });

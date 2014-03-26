@@ -521,7 +521,8 @@ module.exports = function (grunt) {
       'clean:server',
       'concurrent:test',
       'autoprefixer',
-      'karma'
+      'karma',
+      'coveralls'
     ]);
   });  
 
@@ -549,7 +550,6 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
-    'build',
-    'coveralls'
+    'build'
   ]);
 };

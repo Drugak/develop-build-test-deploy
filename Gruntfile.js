@@ -273,7 +273,10 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>/images',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
           dest: '<%= yeoman.dist %>/public/images'
-        }]
+        }],
+        options: {
+          cache: false
+        }
       }
     },
 
@@ -423,8 +426,14 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+        configFile: 'karma.conf.js'
+      }
+    },
+
+    coveralls: {
+      options: {
+        force: true,
+        coverage_dir: 'coverage'
       }
     },
 
@@ -512,7 +521,8 @@ module.exports = function (grunt) {
       'clean:server',
       'concurrent:test',
       'autoprefixer',
-      'karma'
+      'karma',
+      'coveralls'
     ]);
   });  
 

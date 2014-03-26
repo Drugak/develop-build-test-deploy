@@ -430,6 +430,15 @@ module.exports = function (grunt) {
       }
     },
 
+    casperjs: {
+      options: {
+        async: {
+          parallel: false
+        }
+      },
+      files: ['test/casperjs/**/*.js']
+    },
+
     coveralls: {
       options: {
         force: true,
@@ -511,7 +520,9 @@ module.exports = function (grunt) {
         'clean:server',
         'concurrent:test',
         'autoprefixer',
-        'karma'
+        'karma',
+        'express:dev',
+        'casperjs'
       ]);
     }
 

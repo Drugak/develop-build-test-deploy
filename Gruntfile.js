@@ -39,6 +39,11 @@ module.exports = function (grunt) {
           script: 'dist/server.js',
           node_env: 'production'
         }
+      },
+      test: {
+        options: {
+          script: 'server.js'
+        }
       }
     },
     open: {
@@ -533,9 +538,9 @@ module.exports = function (grunt) {
       'concurrent:test',
       'autoprefixer',
       'karma',
-      'coveralls',
-      'express:dev',
-      'casperjs'
+      'express:test',
+      'casperjs',
+      'coveralls'
     ]);
   });
 

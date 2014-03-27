@@ -61,7 +61,7 @@
     "grunt-karma-coveralls": "~2.4.3",
     "karma-coverage": "~0.2.1",
     "grunt-casperjs": "~1.3.0",
-    "grunt-accessibility": "~0.4.1"
+    "grunt-accessibility": "roman01la/grunt-accessibility"
   },
   "engines": {
     "node": ">=0.10.0"

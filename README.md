@@ -26,5 +26,5 @@
 - Integration testing
 - Visual regression testing
 - Accessibility testing
-- CI
 - Code coverage
+- CI

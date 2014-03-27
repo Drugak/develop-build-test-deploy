@@ -448,7 +448,8 @@ module.exports = function (grunt) {
     // Accessibility test settings
     accessibility: {
       options : {
-        accessibilityLevel: 'WCAG2AAA'
+        accessibilityLevel: 'WCAG2AAA',
+        outputFormat: 'json'
       },
       test : {
         files: [{

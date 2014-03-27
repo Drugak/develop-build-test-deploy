@@ -9,5 +9,3 @@ before_script:
   - 'bower install'
 services:
   - mongodb
-after_success:
-  - ls -R reports/coverage/ | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'

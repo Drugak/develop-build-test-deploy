@@ -436,13 +436,11 @@ module.exports = function (grunt) {
     },
 
     // CasperJS test settings
-    casperjs: {
+    mocha_casperjs: {
       options: {
-        async: {
-          parallel: false
-        }
+        timeout: 5000
       },
-      files: ['test/casperjs/**/*.js']
+      files: ['test/casper/**/*.js']
     },
 
     // Accessibility test settings
@@ -546,7 +544,7 @@ module.exports = function (grunt) {
         'autoprefixer',
         'karma',
         'express:dev',
-        'casperjs',
+        'mocha_casperjs',
         'accessibility'
       ]);
     }
@@ -559,7 +557,7 @@ module.exports = function (grunt) {
       'autoprefixer',
       'karma',
       'express:test',
-      'casperjs',
+      'mocha_casperjs',
       'accessibility',
       'coveralls'
     ]);

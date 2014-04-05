@@ -6,7 +6,4 @@ app/bower_components
 heroku
 /views
 dist
-reports/accessibility
-reports/coverage
-reports/load-perf
-reports/visual/desktop/results
+reports

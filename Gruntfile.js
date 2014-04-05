@@ -68,8 +68,8 @@ module.exports = function (grunt) {
         tasks: ['newer:jshint:test', 'karma']
       },
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+       files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+       tasks: ['compass:server', 'autoprefixer']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -145,7 +145,13 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: {
+        dot: true,
+        src: [
+          '.tmp',
+          'reports/load-perf'
+        ]
+      }
     },
 
     // Add vendor prefixed styles
@@ -447,7 +453,9 @@ module.exports = function (grunt) {
     accessibility: {
       options : {
         accessibilityLevel: 'WCAG2AAA',
-        outputFormat: 'json'
+        outputFormat: 'json',
+        force: true,
+        domElement: true
       },
       test : {
         files: [{
@@ -473,6 +481,19 @@ module.exports = function (grunt) {
         reporter: 'spec'
       },
       src: ['test/server/**/*.js']
+    },
+
+    load_perf: {
+      edge: {
+        options: {
+          localPort: 9001,
+          remotePort: 9000,
+          networkProfile: '2G',
+          cwd: __dirname,
+          output: 'reports/load-perf/',
+          animation: 'load-perf.gif'
+        }
+      }
     },
 
     env: {
@@ -545,6 +566,7 @@ module.exports = function (grunt) {
         'karma',
         'express:dev',
         'mocha_casperjs',
+        'load_perf',
         'accessibility'
       ]);
     }

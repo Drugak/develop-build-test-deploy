@@ -26,5 +26,6 @@
 - Integration testing
 - Visual regression testing
 - Accessibility testing
+- Loading & rendering performance measuring
 - Code coverage
 - CI

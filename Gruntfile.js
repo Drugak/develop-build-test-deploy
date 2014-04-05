@@ -149,7 +149,10 @@ module.exports = function (grunt) {
         dot: true,
         src: [
           '.tmp',
-          'reports/load-perf'
+          'reports/accessibility',
+          'reports/coverage',
+          'reports/load-perf',
+          'reports/visual/desktop/results'
         ]
       }
     },
@@ -157,7 +160,7 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 1 version']
+        browsers: ['last 2 versions']
       },
       dist: {
         files: [{
@@ -496,6 +499,19 @@ module.exports = function (grunt) {
       }
     },
 
+    phantomcss: {
+      desktop: {
+        options: {
+          screenshots: 'reports/visual/desktop/baseline',
+          results: 'reports/visual/desktop/results',
+          viewportSize: [1024, 768]
+        },
+        src: [
+          'test/visual/**.js'
+        ]
+      },
+    },
+
     env: {
       test: {
         NODE_ENV: 'test'
@@ -567,7 +583,8 @@ module.exports = function (grunt) {
         'express:dev',
         'mocha_casperjs',
         'load_perf',
-        'accessibility'
+        'accessibility',
+        'phantomcss'
       ]);
     }
 

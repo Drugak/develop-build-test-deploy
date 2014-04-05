@@ -580,6 +580,7 @@ module.exports = function (grunt) {
       'karma',
       'express:test',
       'mocha_casperjs',
+      'load_perf',
       'accessibility',
       'coveralls'
     ]);

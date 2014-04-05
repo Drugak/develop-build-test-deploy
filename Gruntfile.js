@@ -598,6 +598,7 @@ module.exports = function (grunt) {
       'express:test',
       'mocha_casperjs',
       'load_perf',
+      'phantomcss',
       'accessibility',
       'coveralls'
     ]);

@@ -573,9 +573,19 @@ module.exports = function (grunt) {
         'karma',
         'express:dev',
         'mocha_casperjs',
+        'coveralls'
+      ]);
+    }
+
+    if (target === 'more') {
+      return grunt.task.run([
+        'clean:server',
+        'concurrent:test',
+        'autoprefixer',
+        'express:dev',
         'load_perf',
-        'accessibility',
-        'phantomcss'
+        'phantomcss',
+        'accessibility'
       ]);
     }
 
@@ -588,9 +598,6 @@ module.exports = function (grunt) {
       'karma',
       'express:test',
       'mocha_casperjs',
-      'load_perf',
-      'phantomcss',
-      'accessibility',
       'coveralls'
     ]);
   });

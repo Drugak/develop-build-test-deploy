@@ -7,6 +7,8 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+var conf = require('./conf'); // Additional configuration
+
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -187,8 +189,8 @@ module.exports = function (grunt) {
             });
 
             // opens browser on initial server start
-            nodemon.on('config:update', function () {
-              setTimeout(function () {
+            nodemon.on('config:update', function() {
+              setTimeout(function() {
                 require('open')('http://localhost:8080/debug?port=5858');
               }, 500);
             });
@@ -344,7 +346,6 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            'bower_components/**/*',
             'images/{,*/}*.{webp}',
             'fonts/**/*'
           ]
@@ -364,6 +365,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             'package.json',
+            'bower.json',
+            '.bowerrc',
             'server.js',
             'lib/**/*'
           ]
@@ -428,14 +431,20 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
-    // Test settings
+
+    /*
+     * Tests
+     *
+    \* ================== */
+
+    // Client unit testing settings
     karma: {
       unit: {
         configFile: 'karma.conf.js'
       }
     },
 
-    // CasperJS test settings
+    // Functional testing settings
     mocha_casperjs: {
       options: {
         timeout: 5000
@@ -443,7 +452,7 @@ module.exports = function (grunt) {
       files: ['test/casper/**/*.js']
     },
 
-    // Accessibility test settings
+    // Accessibility testing settings
     accessibility: {
       options : {
         accessibilityLevel: 'WCAG2AAA',
@@ -470,6 +479,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // Server unit testing settings
     mochaTest: {
       options: {
         reporter: 'spec'
@@ -477,6 +487,7 @@ module.exports = function (grunt) {
       src: ['test/server/**/*.js']
     },
 
+    // Loading performance testing settings
     load_perf: {
       edge: {
         options: {
@@ -490,6 +501,7 @@ module.exports = function (grunt) {
       }
     },
 
+    // CSS regression testing settings
     phantomcss: {
       desktop: {
         options: {
@@ -503,6 +515,26 @@ module.exports = function (grunt) {
       },
     },
 
+
+    /*
+     * Deployment
+     *
+    \* ================== */
+
+    'ftp-deploy': {
+      build: {
+        auth: conf.deploy.ftp,
+        src: '<%= yeoman.dist %>',
+        dest: 'server_project_dir_path'
+      }
+    },
+
+
+    /*
+     * Environment settings
+     *
+    \* ================== */
+
     env: {
       test: {
         NODE_ENV: 'test'
@@ -511,12 +543,12 @@ module.exports = function (grunt) {
   });
 
   // Used for delaying livereload until after server has restarted
-  grunt.registerTask('wait', function () {
+  grunt.registerTask('wait', function() {
     grunt.log.ok('Waiting for server reload...');
 
     var done = this.async();
 
-    setTimeout(function () {
+    setTimeout(function() {
       grunt.log.writeln('Done waiting!');
       done();
     }, 500);
@@ -526,6 +558,7 @@ module.exports = function (grunt) {
     this.async();
   });
 
+  // Run dev server
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'express:prod', 'open', 'express-keepalive']);
@@ -552,12 +585,13 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', function () {
+  grunt.registerTask('server', function() {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', function(target) {
+  // Run tests
+  grunt.registerTask('test', function (target) {
     if (target === 'server') {
       return grunt.task.run([
         'env:test',
@@ -602,6 +636,7 @@ module.exports = function (grunt) {
     ]);
   });
 
+  // Build
   grunt.registerTask('build', [
     'clean:dist',
     'bower-install',
@@ -618,6 +653,17 @@ module.exports = function (grunt) {
     'usemin'
   ]);
 
+  // Deploy
+  grunt.registerTask('deploy', function (target) {
+    if (target === 'ftp') {
+      return grunt.task.run([
+        'default',
+        'ftp-deploy:build'
+      ]);
+    }
+  });
+
+  // Default
   grunt.registerTask('default', [
     'newer:jshint',
     'test',

@@ -29,3 +29,6 @@
 - Loading & rendering performance measuring
 - Code coverage
 - CI
+
+##Deploy:
+- FTP

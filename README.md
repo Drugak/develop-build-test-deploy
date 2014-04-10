@@ -32,3 +32,4 @@
 
 ##Deploy:
 - FTP
+- SFTP

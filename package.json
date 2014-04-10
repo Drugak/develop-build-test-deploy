@@ -65,7 +65,8 @@
     "grunt-load-perf": "0.1.1",
     "phantomjs": "~1.9.7-3",
     "grunt-phantomcss": "~0.2.3",
-    "grunt-ftp-deploy": "~0.1.2"
+    "grunt-ftp-deploy": "~0.1.2",
+    "grunt-sftp-deploy": "0.0.11"
   },
   "engines": {
     "node": ">=0.10.0"

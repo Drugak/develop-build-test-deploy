@@ -1,10 +1,11 @@
 {
-  "server-1": {
+  "server-ftp": {
     "username": "username",
     "password": "password"
   },
-  "server-2": {
+  "server-sftp": {
     "username": "username",
-    "password": "password"
+    "passphrase": "passphrase",
+    "keyLocation": "~/.ssh/id_dsa"
   }
 }

@@ -521,9 +521,19 @@ module.exports = function (grunt) {
      *
     \* ================== */
 
+    // Deploy via FTP
     'ftp-deploy': {
       build: {
         auth: conf.deploy.ftp,
+        src: '<%= yeoman.dist %>',
+        dest: 'server_project_dir_path'
+      }
+    },
+
+    // Deploy via SFTP
+    'sftp-deploy': {
+      build: {
+        auth: conf.deploy.sftp,
         src: '<%= yeoman.dist %>',
         dest: 'server_project_dir_path'
       }
@@ -659,6 +669,13 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'default',
         'ftp-deploy:build'
+      ]);
+    }
+
+    if (target === 'sftp') {
+      return grunt.task.run([
+        'default',
+        'sftp-deploy:build'
       ]);
     }
   });

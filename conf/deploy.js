@@ -1,5 +1,5 @@
 /*
- * Deploy configuration
+ * Deployment configuration
  *
 \* ================== */
 
@@ -13,5 +13,12 @@ module.exports = {
     host: 'host.name',
     port: 22,
     authKey: 'server-sftp' // Auth credentials stored in .ftppass
+  },
+  ssh: {
+    host: 'host.name',
+    port: 22,
+    username: 'username',
+    password: 'password', // Auth with password
+    passphrase: 'passphrase' // Auth with private key
   }
 };

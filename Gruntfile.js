@@ -7,8 +7,6 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-var conf = require('./conf'); // Additional configuration
-
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -24,7 +22,8 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
-      dist: 'dist'
+      dist: 'dist',
+      deploy: require('./conf').deploy
     },
     express: {
       options: {
@@ -366,10 +365,14 @@ module.exports = function (grunt) {
           src: [
             'package.json',
             'bower.json',
-            '.bowerrc',
             'server.js',
             'lib/**/*'
           ]
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: ['.bowerrc']
         }]
       },
       styles: {
@@ -523,8 +526,8 @@ module.exports = function (grunt) {
 
     // Deploy via FTP
     'ftp-deploy': {
-      build: {
-        auth: conf.deploy.ftp,
+      stage: {
+        auth: '<%= yeoman.deploy.ftp %>',
         src: '<%= yeoman.dist %>',
         dest: 'server_project_dir_path'
       }
@@ -532,10 +535,50 @@ module.exports = function (grunt) {
 
     // Deploy via SFTP
     'sftp-deploy': {
-      build: {
-        auth: conf.deploy.sftp,
+      stage: {
+        auth: '<%= yeoman.deploy.sftp %>',
         src: '<%= yeoman.dist %>',
         dest: 'server_project_dir_path'
+      }
+    },
+
+    // Deploy via SFTP + SSH
+    sftp: {
+      stage: {
+        files: {
+          './': '<%= yeoman.dist %>/**'
+        },
+        options: {
+          srcBasePath: 'dist/',
+          path: '/home/roman01la/apps/sftp-ssh-deploy',
+          host: '<%= yeoman.deploy.ssh.host %>',
+          port: '<%= yeoman.deploy.ssh.port %>',
+          username: '<%= yeoman.deploy.ssh.username %>',
+          agent: process.env.SSH_AUTH_SOCK, // ssh-agent-based auth or
+          //password: '<%= yeoman.deploy.ssh.password %>', // Auth with password or
+          //privateKey: grunt.file.read('path_to_id_rsa'), // Auth with private key
+          //passphrase: '<%= yeoman.deploy.ssh.passphrase %>', // Passphrase for private key
+          createDirectories: true,
+          showProgress: true
+        }
+      }
+    },
+    sshexec: {
+      stage: {
+        command: 'cd apps/sftp-ssh-deploy && '    + // cd into project folder
+                 'pm2 stop my-app && '            + // Stop application processes
+                 'npm install --production && '   + // Install Node production deps
+                 'bower install --production && ' + // Install front-end production deps
+                 'export NODE_ENV=production && ' + // Set Node env variable to run in production mode
+                 'pm2 start server.js --name my-app -i 2 -o out.log -e err.log', // Run application
+
+        options: {
+          host: '<%= yeoman.deploy.ssh.host %>',
+          port: '<%= yeoman.deploy.ssh.port %>',
+          username: '<%= yeoman.deploy.ssh.username %>',
+          agent: process.env.SSH_AUTH_SOCK,
+          pty: true
+        }
       }
     },
 
@@ -668,14 +711,22 @@ module.exports = function (grunt) {
     if (target === 'ftp') {
       return grunt.task.run([
         'default',
-        'ftp-deploy:build'
+        'ftp-deploy:stage'
       ]);
     }
 
     if (target === 'sftp') {
       return grunt.task.run([
         'default',
-        'sftp-deploy:build'
+        'sftp-deploy:stage'
+      ]);
+    }
+
+    if (target === 'ssh') {
+      return grunt.task.run([
+        'default',
+        'sftp:stage',
+        'sshexec:stage'
       ]);
     }
   });

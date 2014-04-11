@@ -27,6 +27,7 @@
 - Visual regression testing
 - Accessibility testing
 - Loading & rendering performance measuring
+- Web performance metrics
 - Code coverage
 - CI
 

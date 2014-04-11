@@ -144,7 +144,8 @@ module.exports = function (grunt) {
           'reports/accessibility',
           'reports/coverage',
           'reports/load-perf',
-          'reports/visual/desktop/results'
+          'reports/visual/desktop/results',
+          'reports/metrics'
         ]
       }
     },
@@ -518,6 +519,17 @@ module.exports = function (grunt) {
       },
     },
 
+    // Web performance metrics
+    phantomas: {
+      dev: {
+        options: {
+          indexPath: 'reports/metrics/',
+          url: 'http://localhost:9000',
+          buildUi: true
+        }
+      }
+    },
+
 
     /*
      * Deployment
@@ -692,7 +704,8 @@ module.exports = function (grunt) {
         'express:dev',
         'load_perf',
         'phantomcss',
-        'accessibility'
+        'accessibility',
+        'phantomas:dev'
       ]);
     }
 

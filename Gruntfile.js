@@ -550,7 +550,7 @@ module.exports = function (grunt) {
         },
         options: {
           srcBasePath: 'dist/',
-          path: '/home/roman01la/apps/sftp-ssh-deploy',
+          path: 'server_project_dir_path',
           host: '<%= yeoman.deploy.ssh.host %>',
           port: '<%= yeoman.deploy.ssh.port %>',
           username: '<%= yeoman.deploy.ssh.username %>',

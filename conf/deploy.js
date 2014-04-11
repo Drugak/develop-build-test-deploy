@@ -20,5 +20,12 @@ module.exports = {
     username: 'username',
     password: 'password', // Auth with password
     passphrase: 'passphrase' // Auth with private key
+  },
+  git: {
+    host: 'host.name',
+    port: 22,
+    username: 'username',
+    password: 'password', // Auth with password
+    passphrase: 'passphrase' // Auth with private key
   }
 };

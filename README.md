@@ -34,6 +34,7 @@
 - FTP
 - SFTP
 - SFTP + SSH
+- SSH + Git
 
 ##Process managing
 - [pm2](https://github.com/Unitech/pm2)

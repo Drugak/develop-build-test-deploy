@@ -565,17 +565,37 @@ module.exports = function (grunt) {
     },
     sshexec: {
       stage: {
-        command: 'cd apps/sftp-ssh-deploy && '    + // cd into project folder
-                 'pm2 stop my-app && '            + // Stop application processes
-                 'npm install --production && '   + // Install Node production deps
-                 'bower install --production && ' + // Install front-end production deps
-                 'export NODE_ENV=production && ' + // Set Node env variable to run in production mode
-                 'pm2 start server.js --name my-app -i 2 -o out.log -e err.log', // Run application
-
+        command: [
+          'cd server_project_dir_path', // cd into project folder
+          'pm2 stop my-app',            // Stop application processes
+          'npm install --production',   // Install Node production deps
+          'bower install --production', // Install front-end production deps
+          'export NODE_ENV=production', // Set Node env variable to run in production mode
+          'pm2 start server.js --name my-app -i 2 -o out.log -e err.log' // Run application
+        ].join(' && '),
         options: {
           host: '<%= yeoman.deploy.ssh.host %>',
           port: '<%= yeoman.deploy.ssh.port %>',
           username: '<%= yeoman.deploy.ssh.username %>',
+          agent: process.env.SSH_AUTH_SOCK,
+          pty: true
+        }
+      },
+      git: {
+        command: [
+          'cd server_project_dir_path', // cd into project folder
+          'pm2 stop my-app',            // Stop application processes
+          'git pull origin master',     // Pull source from project repo
+          'npm install',                // Install Node production deps
+          'bower install',              // Install front-end production deps
+          'grunt',                      // Test & build project
+          'cd dist',                    // cd into build dir
+          'pm2 start server.js --name my-app -i 1 -o out.log -e err.log' // Run application
+        ].join(' && '),
+        options: {
+          host: '<%= yeoman.deploy.git.host %>',
+          port: '<%= yeoman.deploy.git.port %>',
+          username: '<%= yeoman.deploy.git.username %>',
           agent: process.env.SSH_AUTH_SOCK,
           pty: true
         }

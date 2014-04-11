@@ -23,7 +23,8 @@ module.exports = function (grunt) {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
       dist: 'dist',
-      deploy: require('./conf').deploy
+      deploy: require('./conf').deploy,
+      reports: 'reports'
     },
     express: {
       options: {
@@ -141,11 +142,12 @@ module.exports = function (grunt) {
         dot: true,
         src: [
           '.tmp',
-          'reports/accessibility',
-          'reports/coverage',
-          'reports/load-perf',
-          'reports/visual/desktop/results',
-          'reports/metrics'
+          '<%= yeoman.reports %>/accessibility',
+          '<%= yeoman.reports %>/coverage',
+          '<%= yeoman.reports %>/load-perf',
+          '<%= yeoman.reports %>/visual/desktop/results',
+          '<%= yeoman.reports %>/perf-metrics',
+          '<%= yeoman.reports %>/complexity/*'
         ]
       }
     },
@@ -469,17 +471,9 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.app %>/views/',
           src: ['**/*.html'],
-          dest: 'reports/accessibility/',
+          dest: '<%= yeoman.reports %>/accessibility/',
           ext: '-report'
         }]
-      }
-    },
-
-    // Code coverage report submit to Coveralls.io
-    coveralls: {
-      options: {
-        force: true,
-        coverage_dir: 'reports/coverage'
       }
     },
 
@@ -491,26 +485,12 @@ module.exports = function (grunt) {
       src: ['test/server/**/*.js']
     },
 
-    // Loading performance testing settings
-    load_perf: {
-      edge: {
-        options: {
-          localPort: 9001,
-          remotePort: 9000,
-          networkProfile: '2G',
-          cwd: __dirname,
-          output: 'reports/load-perf/',
-          animation: 'load-perf.gif'
-        }
-      }
-    },
-
     // CSS regression testing settings
     phantomcss: {
       desktop: {
         options: {
-          screenshots: 'reports/visual/desktop/baseline',
-          results: 'reports/visual/desktop/results',
+          screenshots: '<%= yeoman.reports %>/visual/desktop/baseline',
+          results: '<%= yeoman.reports %>/visual/desktop/results',
           viewportSize: [1024, 768]
         },
         src: [
@@ -519,14 +499,52 @@ module.exports = function (grunt) {
       },
     },
 
+    /*
+     * Metrics
+     *
+    \* ================== */
+
+    // Loading performance testing settings
+    load_perf: {
+      edge: {
+        options: {
+          localPort: 9001,
+          remotePort: 9000,
+          networkProfile: '2G',
+          cwd: __dirname,
+          output: '<%= yeoman.reports %>/load-perf/',
+          animation: 'load-perf.gif'
+        }
+      }
+    },
+
     // Web performance metrics
     phantomas: {
       dev: {
         options: {
-          indexPath: 'reports/metrics/',
+          indexPath: '<%= yeoman.reports %>/perf-metrics/',
           url: 'http://localhost:9000',
           buildUi: true
         }
+      }
+    },
+
+    // JavaScript complexity analysis
+    complexity: {
+      generic: {
+        src: '<%= yeoman.app %>/scripts/**/*.js',
+        options: {
+          jsLintXML: '<%= yeoman.reports %>/complexity/report.xml', // create XML JSLint-like report
+          maintainability: 100
+        }
+      }
+    },
+
+    // Code coverage report submit to Coveralls.io
+    coveralls: {
+      options: {
+        force: true,
+        coverage_dir: '<%= yeoman.reports %>/coverage'
       }
     },
 
@@ -705,7 +723,8 @@ module.exports = function (grunt) {
         'load_perf',
         'phantomcss',
         'accessibility',
-        'phantomas:dev'
+        'phantomas:dev',
+        'complexity:generic'
       ]);
     }
 

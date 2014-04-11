@@ -26,10 +26,13 @@
 - Integration testing
 - Visual regression testing
 - Accessibility testing
+- CI
+
+##Metrics
 - Loading & rendering performance measuring
 - Web performance metrics
+- Code complexity
 - Code coverage
-- CI
 
 ##Deploy:
 - FTP

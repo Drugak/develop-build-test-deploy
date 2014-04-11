@@ -10,4 +10,4 @@ reports/accessibility
 reports/coverage
 reports/load-perf
 reports/visual/desktop/results
-reports/metrics
+reports/perf-metrics

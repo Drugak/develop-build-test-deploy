@@ -34,3 +34,13 @@
 - FTP
 - SFTP
 - SFTP + SSH
+
+##Process managing
+- [pm2](https://github.com/Unitech/pm2)
+- [forever](https://github.com/nodejitsu/forever)
+- [Upstart](http://upstart.ubuntu.com/) + [Monit](http://mmonit.com/monit/)
+
+##Load balancing
+- Native [Cluster](http://nodejs.org/api/cluster.html) module
+- [pm2](https://github.com/Unitech/pm2) (With native Cluster module)
+- [nginx](http://cjihrig.com/blog/scaling-node-js-applications/)

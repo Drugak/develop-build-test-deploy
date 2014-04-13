@@ -69,7 +69,8 @@
     "grunt-sftp-deploy": "0.0.11",
     "grunt-ssh": "~0.11.1",
     "grunt-phantomas": "~0.5.3",
-    "grunt-complexity": "~0.1.51"
+    "grunt-complexity": "roman01la/grunt-complexity",
+    "grunt-plato": "~1.0.0"
   },
   "engines": {
     "node": ">=0.10.0"

@@ -11,3 +11,5 @@ reports/coverage
 reports/load-perf
 reports/visual/desktop/results
 reports/perf-metrics
+reports/complexity
+reports/complexity-plato

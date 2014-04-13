@@ -146,8 +146,7 @@ module.exports = function (grunt) {
           '<%= yeoman.reports %>/coverage',
           '<%= yeoman.reports %>/load-perf',
           '<%= yeoman.reports %>/visual/desktop/results',
-          '<%= yeoman.reports %>/perf-metrics',
-          '<%= yeoman.reports %>/complexity/*'
+          '<%= yeoman.reports %>/perf-metrics'
         ]
       }
     },
@@ -504,6 +503,14 @@ module.exports = function (grunt) {
      *
     \* ================== */
 
+    // Code coverage report submit to Coveralls.io
+    coveralls: {
+      options: {
+        force: true,
+        coverage_dir: '<%= yeoman.reports %>/coverage'
+      }
+    },
+
     // Loading performance testing settings
     load_perf: {
       edge: {
@@ -529,22 +536,41 @@ module.exports = function (grunt) {
       }
     },
 
-    // JavaScript complexity analysis
+    // JavaScript complexity analysis #1
     complexity: {
-      generic: {
+      client: {
         src: '<%= yeoman.app %>/scripts/**/*.js',
         options: {
-          jsLintXML: '<%= yeoman.reports %>/complexity/report.xml', // create XML JSLint-like report
+          jsLintXML: '<%= yeoman.reports %>/complexity/client/report.xml',
+          maintainability: 100
+        }
+      },
+      server: {
+        src: 'lib/**/*.js',
+        options: {
+          jsLintXML: '<%= yeoman.reports %>/complexity/server/report.xml',
           maintainability: 100
         }
       }
     },
 
-    // Code coverage report submit to Coveralls.io
-    coveralls: {
-      options: {
-        force: true,
-        coverage_dir: '<%= yeoman.reports %>/coverage'
+    // JavaScript complexity analysis #2
+    plato: {
+      client: {
+        options : {
+          jshint : false
+        },
+        files: {
+          '<%= yeoman.reports %>/complexity-plato/client': '<%= yeoman.app %>/scripts/**/*.js'
+        }
+      },
+      server: {
+        options : {
+          jshint : false
+        },
+        files: {
+          '<%= yeoman.reports %>/complexity-plato/server': 'lib/**/*.js'
+        }
       }
     },
 
@@ -724,7 +750,8 @@ module.exports = function (grunt) {
         'phantomcss',
         'accessibility',
         'phantomas:dev',
-        'complexity:generic'
+        'complexity',
+        'plato'
       ]);
     }
 

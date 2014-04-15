@@ -4,5 +4,6 @@
 \* ================== */
 
 module.exports = {
-  deploy: require('./deploy')
+  deploy: require('./deploy'),
+  page_speed: require('./page-speed')
 };

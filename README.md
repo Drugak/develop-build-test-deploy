@@ -26,6 +26,7 @@
 - Integration testing
 - Visual regression testing
 - Accessibility testing
+- Monkey testing
 - CI
 
 ##Metrics
@@ -33,6 +34,8 @@
 - Web performance metrics
 - Code complexity
 - Code coverage
+- API load testing
+- Google PageSpeed Insights
 
 ##Deploy:
 - FTP

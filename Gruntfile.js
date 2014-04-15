@@ -24,6 +24,7 @@ module.exports = function (grunt) {
       app: require('./bower.json').appPath || 'app',
       dist: 'dist',
       deploy: require('./conf').deploy,
+      page_speed: require('./conf').page_speed,
       reports: 'reports'
     },
     express: {
@@ -146,8 +147,30 @@ module.exports = function (grunt) {
           '<%= yeoman.reports %>/coverage',
           '<%= yeoman.reports %>/load-perf',
           '<%= yeoman.reports %>/visual/desktop/results',
-          '<%= yeoman.reports %>/perf-metrics'
+          '<%= yeoman.reports %>/perf-metrics',
+          '<%= yeoman.reports %>/api'
         ]
+      },
+
+      api: {
+        dot: true,
+        src: ['<%= yeoman.reports %>/api']
+      },
+      load_perf: {
+        dot: true,
+        src: ['<%= yeoman.reports %>/load-perf']
+      },
+      accessibility: {
+        dot: true,
+        src: ['<%= yeoman.reports %>/accessibility']
+      },
+      phantomcss: {
+        dot: true,
+        src: ['<%= yeoman.reports %>/visual/desktop/results']
+      },
+      phantomas: {
+        dot: true,
+        src: ['<%= yeoman.reports %>/perf-metrics']
       }
     },
 
@@ -574,6 +597,60 @@ module.exports = function (grunt) {
       }
     },
 
+    // API test
+    api_benchmark: {
+      test: {
+        options: {
+          output: 'reports/api'
+        },
+        files: {
+          'index.html': 'test/api/api.json'
+        }
+      }
+    },
+
+    // Google PageSpeed Insights
+    pagespeed: {
+      dev: {
+        options: {
+          url: 'url_accessible_from_the_public_internet:9000',
+          locale: 'en_GB',
+          strategy: 'desktop',
+          threshold: 80
+        }
+      },
+      dist: {
+        options: {
+          paths: 'url_accessible_from_the_public_internet:9000',
+          locale: 'en_GB',
+          strategy: 'desktop',
+          threshold: 80
+        }
+      },
+      prod: {
+        options: {
+          paths: 'production_server_url',
+          locale: 'en_GB',
+          strategy: 'desktop',
+          threshold: 80
+        }
+      },
+
+      options: {
+        key: '<%= yeoman.page_speed.api_key %>'
+      }
+    },
+
+    // Unleash a horde of undisciplined gremlins
+    gremlins: {
+      horde: {
+        options: {
+          path: 'http://localhost:9000',
+          test: __dirname + '/test/gremlins/horde.js'
+        }
+      }
+    },
+
 
     /*
      * Deployment
@@ -740,16 +817,93 @@ module.exports = function (grunt) {
       ]);
     }
 
+    switch (target) {
+      case 'api':
+        return grunt.task.run([
+          'clean:api',
+          'express:dev',
+          'api_benchmark'
+        ]);
+        break;
+      case 'load_perf':
+        return grunt.task.run([
+          'clean:load_perf',
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'load_perf'
+        ]);
+        break;
+      case 'phantomcss':
+        return grunt.task.run([
+          'clean:phantomcss',
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'phantomcss'
+        ]);
+        break;
+      case 'accessibility':
+        return grunt.task.run([
+          'clean:accessibility',
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'accessibility'
+        ]);
+        break;
+      case 'phantomas':
+        return grunt.task.run([
+          'clean:phantomas',
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'phantomas:dev'
+        ]);
+        break;
+      case 'complexity':
+        return grunt.task.run([
+          'complexity',
+          'plato'
+        ]);
+        break;
+      case 'pagespeed-dev':
+        return grunt.task.run([
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'pagespeed:dev'
+        ]);
+        break;
+      case 'pagespeed-dist':
+        return grunt.task.run([
+          'build',
+          'express:prod',
+          'pagespeed:dist'
+        ]);
+        break;
+      case 'gremlins':
+        return grunt.task.run([
+          'concurrent:test',
+          'autoprefixer',
+          'express:dev',
+          'gremlins:horde'
+        ]);
+        break;
+    }
+
     if (target === 'more') {
       return grunt.task.run([
         'clean:server',
         'concurrent:test',
         'autoprefixer',
         'express:dev',
+        'api_benchmark',
         'load_perf',
         'phantomcss',
         'accessibility',
         'phantomas:dev',
+        'pagespeed:dev',
         'complexity',
         'plato'
       ]);

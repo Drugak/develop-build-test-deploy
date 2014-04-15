@@ -1,0 +1,15 @@
+{
+  "service": {
+    "API": "http://localhost:9000"
+  },
+  "endpoints": {
+    "Get awesomeThings": "/api/awesomeThings"
+  },
+  "options": {
+    "minSamples": 1000,
+    "runMode": "parallel",
+    "maxConcurrentRequests": 20,
+    "debug": true,
+    "stopOnError": false
+  }
+}
